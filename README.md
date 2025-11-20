@@ -1,36 +1,30 @@
 # DH 
 
-#### 📚 *An Assignment of the Digital Humanities Course* 
+#### 📚 *An Assignment for the Digital Humanities Course* 
 
-## 💬 Japanese Literature Name Finder (RAG-based Web App)
 
-This project is a simple Retrieval-Augmented Generation (RAG) web application that allows users to search for where a given kanji name appears in classical Japanese literature. It uses 青空文庫 (Aozora Bunko) as the text source and demonstrates the idea of combining NLP search with conversational AI interaction.
+## 🏯 Japanese Literary Name-Kanji Context Finder (RAG-based Web App)
+
+**Japanese Literary Name-Kanji Context Finder** is a lightweight **Retrieval-Augmented Generation (RAG)** system that searches for where a given kanji character appears within classical Japanese literature from **Aozora Bunko (青空文庫)**.
+It demonstrates how **text preprocessing**, **semantic embeddings**, **vector search**, and **LLM-based generation** can be combined to build a practical tool for ***Digital Humanities*** research.
+
+This project was created as an assignment for the *Digital Humanities* course and also serves as a reusable mini-framework for RAG-based text exploration.
 
 ### 🌸 Project Overview
 
-When a user inputs a kanji name (e.g. 「瑩」), the system searches downloaded Japanese literary works from Aozora Bunko, finds matching contexts, and summarizes the results in natural Japanese sentences.
+When a user inputs a kanji (e.g., **「瑩」**), the system:
 
-This project is developed for the Digital Humanities course and also serves as a base framework for future expansion.
+1. **Searches all Aozora texts**
+2. **Retrieves the sentence and paragraph containing the kanji**
+3. **Links the matched context to title / author / Aozora card**
+4. **Merges curated + generated kanji meanings**
+5. **Uses Gemini + FAISS to produce a clean RAG-based explanation**
 
-### 🧩 System Architecture
+This project applies **modern NLP + vector search + LLM reasoning**  
+to classical Japanese literature, making kanji-centric reading and analysis  
+**fast, interactive, and scalable.**
 
-*Streamlit Frontend (UI)*
 
-- Chat-style user input
-- Display matched excerpts
-- Show source references
-
-*RAG Core (Python Backend)*
-
-- Text Preprocessing
-- Chunking & Embeddings
-- Vector Search (FAISS)
-- Gemini LLM Generation
-
-*Aozora Bunko Dataset*
-
-- .txt files (UTF-8)
-- Metadata (title, author)
 
 ### ⚙️ Tech Stack
 
@@ -39,40 +33,171 @@ This project is developed for the Digital Humanities course and also serves as a
 | Frontend | Streamlit | Interactive web app interface |
 | Backend | Python| Main development language |
 | Embeddings | Google Gemini Embeddings API | Convert text chunks into vectors |
-| Vector DB | FAISS or Chroma | Efficient similarity search |
+| Vector DB | FAISS  | Efficient similarity search |
 | LLM | Gemini | Generate summarized answers |
 | Data | Aozora Bunko | Public domain Japanese literature |
 
+### 🧩 System Architecture
+
+***Streamlit Frontend (UI)***
+- Chat-style user input
+- Display matched excerpts
+- Show source references
+
+***RAG Core (Python Backend)***
+
+- Text Preprocessing
+- Chunking & Embeddings
+- Vector Search (FAISS)
+- Gemini LLM Generation
+
+***Aozora Bunko Dataset***
+
+- .txt files (UTF-8)
+- Metadata (title, author)
 
 ### 📂 Project Structure
+
 ```
-project_root/
-├── app.py — Streamlit web interface
-├── rag_core.py — Main RAG logic (embedding, search, generation)
-├── requirements.txt — Python dependencies
-├── config.yaml — API keys & path settings (excluded from repo)
-├── data/ — Text corpus folder
-│ ├── botchan.txt
-│ ├── rashomon.txt
-│ └── ...
-└── vectorstore/ — Saved embeddings or FAISS index
+DH/
+├── app_chat.py                   # Streamlit chat UI 
+├── rag_core.py                   # RAG pipeline + paragraph index builder (--build)
+├── aozora_downloader.py          # Downloads & converts Aozora Bunko texts
+├── build_char_semantic.py        # Builds kanji semantics (--defs) + kanji FAISS index (--index)
+├── faiss_inspect.py              # Debug tool for FAISS index
+├── make_missing_sidecars.py      # Utility script: regenerate missing metadata sidecar files for Aozora texts
+├── requirements.txt              # Python dependencies
+├── config.yaml                   # API keys & path settings (excluded from repo)
+│
+├── data/ (excluded from repo)
+│   ├── *.txt                     # Aozora UTF-8 texts
+│   ├── *.meta.json               # Metadata sidecars for corpus files; required for RAG indexing
+│   ├── kanji_semantic.json       # user-curated semantics 
+│   └── kanji_semantic_all.jsonl  # auto-generated semantics (--defs) 
+│
+└── index/
+│    ├── char_semantic/
+│    │     ├── faiss_char_semantic.faiss   # kanji-level FAISS index
+│    │     └── char_vocab.jsonl            # kanji-level metadata
+│    └── faiss/
+│          ├── vectors.faiss               # paragraph-level index (rag_core.py --build)
+│          └── metadata.jsonl              # paragraph-level metadata
+│ 
+├── .gitignore                    # Git ignore rules (exclude cache, index files, API keys, etc.)
+└── README.md                     # Main project overview, workflow description, and usage instructions
+
 ```
 
 
+### 🔄 End-to-End Workflow
+
+```mermaid
+flowchart TD
+
+    %% ---------- Node Styles ----------
+    classDef down fill:#e3f2fd,stroke:#1e88e5,stroke-width:1.5px;
+    classDef build fill:#fff3e0,stroke:#fb8c00,stroke-width:1.5px;
+    classDef index fill:#e8f5e9,stroke:#43a047,stroke-width:1.5px;
+    classDef para fill:#e0f7fa,stroke:#00838f,stroke-width:1.5px;
+    classDef rag fill:#ede7f6,stroke:#8e24aa,stroke-width:1.5px;
+    classDef ui fill:#fce4ec,stroke:#e91e63,stroke-width:1.5px;
+    classDef user fill:#f5f5f5,stroke:#616161,stroke-width:1px;
+
+    %% ---------- Flow ----------
+    A["Aozora Bunko"]:::down --> B["aozora_downloader.py — download & convert"]:::down
+    B --> C["data/*.txt"]:::down
+
+    %% ---- char-level semantic workflow ----
+    C --> D["build_char_semantic.py --defs — build kanji semantics"]:::build
+    D --> E["kanji_semantic_all.jsonl"]:::build
+    
+    C --> F["build_char_semantic.py --index — build kanji FAISS index"]:::index
+    F --> G["faiss_char_semantic.faiss / char_vocab.jsonl"]:::index
+
+    %% ---- paragraph-level RAG index ----
+    C --> K["rag_core.py --build — build paragraph index"]:::para
+    K --> L["vectors.faiss / metadata.jsonl (paragraph chunks)"]:::para
+
+    %% ---- combine into RAG ----
+    E --> H["rag_core.py — RAG retrieval & explanation"]:::rag
+    G --> H
+    L --> H
+
+    H --> I["app_chat.py / app.py — Streamlit UI"]:::ui
+    I --> J["User query → results"]:::user
+
+```
+
+
+### 🧪 Build & Usage Commands
+##### 1. Download Aozora Texts
+
+Download specific author:
+
+```bash
+python aozora_downloader.py --author "夏目漱石"
+```
+
+Random N works:
+
+```bash
+python aozora_downloader.py --random 5
+```
+
+Download by card ID:
+
+```bash
+python aozora_downloader.py --card-id 7799
+```
+##### 2. Build Kanji Semantics (Two-Step)
+###### Step A — Generate semantic dictionary
+```bash
+python build_char_semantic.py --defs
+
+Outputs:
+
+kanji_semantic_all.jsonl
+kanji_semantic.json (if manually curated)
+```
+###### Step B — Build FAISS index (kanji-level)
+```bash
+python build_char_semantic.py --index
+
+Outputs:
+
+index/char_semantic/faiss_char_semantic.faiss
+index/char_semantic/metadata.jsonl
+```
+##### 3. Build Paragraph-Level Index (RAG Core)
+```bash
+python rag_core.py --build
+
+Outputs:
+
+index/faiss/vectors.faiss
+index/faiss/metadata.jsonl
+
+This index enables full-paragraph context retrieval.
+```
+
+##### 4. Run the Web App
+
+```bash
+streamlit run app_chat.py
+```
 
 
 ### 🧠 Workflow Summary
 
-*Preprocessing* – Parse and preserve ruby annotations from Aozora texts to retain the original readings given by authors, while cleaning unnecessary markup and splitting the text into semantic chunks.
+**Preprocessing** – Download Aozora texts, normalize formatting, clean markup, and split content into sentences and paragraphs. Generate per-text sidecar metadata (`*.meta.json`).
 
-*Embedding* – Generate semantic embeddings for each chunk using Gemini Embeddings API.
+**Kanji Semantics** – Build curated + auto-generated kanji meanings (`--defs`), then create a kanji-level FAISS index (`--index`).
 
-*Storage* – Save all embeddings to FAISS or Chroma vector database.
+**Embedding & Indexing** – Use Gemini Embeddings to encode paragraphs and store them in a paragraph-level FAISS index (`rag_core.py --build`).
 
-*Retrieval* – Convert user query into embedding and search for similar text.
+**Retrieval** – Convert the user’s kanji into embeddings, search both kanji-level and paragraph-level indexes, and gather matched contexts with metadata.
 
-*Generation* – Feed top-k matched passages into Gemini model to summarize and display sources.
-
+**Generation** – Combine context + kanji meanings and feed them to Gemini to produce a concise, literature-aware Japanese explanation.
 
 
 ### 💡 References
