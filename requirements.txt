@@ -1,0 +1,9 @@
+streamlit
+faiss-cpu
+numpy
+pandas
+pyyaml
+beautifulsoup4 
+tqdm
+requests
+google-generativeai
