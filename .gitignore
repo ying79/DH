@@ -208,3 +208,8 @@ __marimo__/
 
 # hidden files
 .README.md
+.dh
+config.yaml
+debug/
+data/
+index/*/

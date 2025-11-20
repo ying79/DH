@@ -39,22 +39,13 @@ to classical Japanese literature, making kanji-centric reading and analysis
 
 ### 🧩 System Architecture
 
-***Streamlit Frontend (UI)***
-- Chat-style user input
-- Display matched excerpts
-- Show source references
 
-***RAG Core (Python Backend)***
+| Layer | Components | Description |
+|-------|------------|-------------|
+| **Streamlit Frontend (UI)** | • Chat-style input<br>• Display matched excerpts<br>• Show source references | Handles user interaction and displays RAG results in a conversational interface. |
+| **RAG Core (Python Backend)** | • Text preprocessing<br>• Chunking & embeddings<br>• Vector search (FAISS)<br>• Gemini LLM generation | Processes texts, builds embeddings, retrieves relevant excerpts, and generates explanations. |
+| **Aozora Bunko Dataset** | • UTF-8 `.txt` files<br>• Metadata: title, author | Raw corpus used for retrieval, including downloaded classical literature. |
 
-- Text Preprocessing
-- Chunking & Embeddings
-- Vector Search (FAISS)
-- Gemini LLM Generation
-
-***Aozora Bunko Dataset***
-
-- .txt files (UTF-8)
-- Metadata (title, author)
 
 ### 📂 Project Structure
 
@@ -130,7 +121,7 @@ flowchart TD
 
 
 ### 🧪 Build & Usage Commands
-##### 1. Download Aozora Texts
+#### 1. Download Aozora Texts
 
 Download specific author:
 
@@ -149,8 +140,8 @@ Download by card ID:
 ```bash
 python aozora_downloader.py --card-id 7799
 ```
-##### 2. Build Kanji Semantics (Two-Step)
-###### Step A — Generate semantic dictionary
+#### 2. Build Kanji Semantics (Two-Step)
+##### Step A — Generate semantic dictionary
 ```bash
 python build_char_semantic.py --defs
 
@@ -159,7 +150,7 @@ Outputs:
 kanji_semantic_all.jsonl
 kanji_semantic.json (if manually curated)
 ```
-###### Step B — Build FAISS index (kanji-level)
+##### Step B — Build FAISS index (kanji-level)
 ```bash
 python build_char_semantic.py --index
 
@@ -168,7 +159,7 @@ Outputs:
 index/char_semantic/faiss_char_semantic.faiss
 index/char_semantic/metadata.jsonl
 ```
-##### 3. Build Paragraph-Level Index (RAG Core)
+#### 3. Build Paragraph-Level Index (RAG Core)
 ```bash
 python rag_core.py --build
 
@@ -180,7 +171,7 @@ index/faiss/metadata.jsonl
 This index enables full-paragraph context retrieval.
 ```
 
-##### 4. Run the Web App
+#### 4. Run the Web App
 
 ```bash
 streamlit run app_chat.py
