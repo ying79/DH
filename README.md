@@ -66,7 +66,7 @@ DH/
 │   ├── kanji_semantic.json       # user-curated semantics 
 │   └── kanji_semantic_all.jsonl  # auto-generated semantics (--defs) 
 │
-└── index/
+└── index/ (excluded from repo)
 │    ├── char_semantic/
 │    │     ├── faiss_char_semantic.faiss   # kanji-level FAISS index
 │    │     └── char_vocab.jsonl            # kanji-level metadata

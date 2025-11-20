@@ -213,6 +213,7 @@ config.yaml
 debug/
 data/
 index/*/
+index/
 .DS_Store
 */.DS_Store
 **/.DS_Store
