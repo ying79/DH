@@ -164,13 +164,13 @@ char_index:
 ```
 ***Notes***
 
-- gemini_api_key must be provided by the user.(The key is excluded from the repository for security.) 
+- ***gemini_api_key*** must be provided by the user.(The key is excluded from the repository for security.) 
 
-- All index directories (index/faiss, index/char_semantic/) will be created automatically by the scripts. 
+- All ***index directories*** (index/faiss, index/char_semantic/) will be created automatically by the scripts. 
 
-- data/ and index/ contents are not included in the repo; users must generate them via the commands provided in the next section. 
+- data/ and index/ contents are ***NOT*** included in the repo; users must generate them via the commands provided in the next section. 
 
-- seed_json is optional and used for enriching the kanji semantic dictionary during incremental updates. 
+- ***seed_json*** is optional and used for enriching the kanji semantic dictionary during incremental updates. 
 
 
 ---
