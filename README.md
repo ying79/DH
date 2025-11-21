@@ -1,4 +1,4 @@
-# DH  [![DOI](https://zenodo.org/badge/1068996564.svg)](https://doi.org/10.5281/zenodo.17667425)
+# DH 
 
 #### 📚 *An Assignment for the Digital Humanities Course* 
 
@@ -257,12 +257,10 @@ FAISS: https://github.com/facebookresearch/faiss
 Streamlit Docs: https://docs.streamlit.io/  
 Google Generative AI SDK: https://ai.google.dev/   
 
-### 📚 Citation
+### 📑 Citation
 
 If you find this project helpful for your study, research, or teaching,
 you may reference it using the DOI below:
-
-**DOI:** https://doi.org/10.5281/zenodo.17667425
 
 [![DOI](https://zenodo.org/badge/1068996564.svg)](https://doi.org/10.5281/zenodo.17667425)
 
