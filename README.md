@@ -110,7 +110,7 @@ flowchart TD
     D --> E["kanji_semantic_all.jsonl"]:::build
     
     C --> F["build_char_semantic.py --index — build kanji FAISS index"]:::index
-    F --> G["faiss_char_semantic.faiss / char_vocab.jsonl"]:::index
+    F --> G["faiss_char_semantic.faiss / char_vocab.jsonl (kanji-level semantic index)"]:::index
 
     %% ---- paragraph-level RAG index ----
     C --> K["rag_core.py --build — build paragraph index"]:::para
@@ -121,7 +121,7 @@ flowchart TD
     G --> H
     L --> H
 
-    H --> I["app_chat.py / app.py — Streamlit UI"]:::ui
+    H --> I["app_chat.py — Streamlit UI"]:::ui
     I --> J["User query → results"]:::user
 
 ```
