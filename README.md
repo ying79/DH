@@ -2,6 +2,7 @@
 
 #### 📚 *An Assignment for the Digital Humanities Course* 
 
+---
 
 ## 🏯 Japanese Literary Name-Kanji Context Finder (RAG-based Web App)
 
@@ -9,6 +10,8 @@
 It demonstrates how **text preprocessing**, **semantic embeddings**, **vector search**, and **LLM-based generation** can be combined to build a practical tool for ***Digital Humanities*** research.
 
 This project was created as an assignment for the *Digital Humanities* course and also serves as a reusable mini-framework for RAG-based text exploration.
+
+---
 
 ### 🌸 Project Overview
 
@@ -24,7 +27,7 @@ This project applies **modern NLP + vector search + LLM reasoning**
 to classical Japanese literature, making kanji-centric reading and analysis  
 **fast, interactive, and scalable.**
 
-
+---
 
 ### ⚙️ Tech Stack
 
@@ -37,6 +40,8 @@ to classical Japanese literature, making kanji-centric reading and analysis
 | LLM | Gemini | Generate summarized answers |
 | Data | Aozora Bunko | Public domain Japanese literature |
 
+---
+
 ### 🧩 System Architecture
 
 
@@ -46,6 +51,7 @@ to classical Japanese literature, making kanji-centric reading and analysis
 | **RAG Core (Python Backend)** | • Text preprocessing<br>• Chunking & embeddings<br>• Vector search (FAISS)<br>• Gemini LLM generation | Processes texts, builds embeddings, retrieves relevant excerpts, and generates explanations. |
 | **Aozora Bunko Dataset** | • UTF-8 `.txt` files<br>• Metadata: title, author | Raw corpus used for retrieval, including downloaded classical literature. |
 
+---
 
 ### 📂 Project Structure
 
@@ -79,6 +85,7 @@ DH/
 
 ```
 
+---
 
 ### 🔄 End-to-End Workflow
 
@@ -119,6 +126,54 @@ flowchart TD
 
 ```
 
+---
+
+### ⚙️ Configuration (config.yaml)
+
+This project uses a single configuration file, config.yaml, which stores API keys, model choices, and all index/corpus paths.
+A valid configuration is required before running any of the build scripts (--defs, --index, --build) or launching the Streamlit app.
+
+Below is the full structure used by this project:
+
+```bash
+api:
+  # gemini_api_key: ""     # Add your Gemini API key here
+
+models:
+  embed: "text-embedding-004"
+  llm: "gemini-2.0-flash"
+
+chunking:
+  max_chars: 1200
+  overlap: 120
+
+embedding:
+  batch_size: 128
+  normalize: true
+
+index:
+  dir: "index/faiss"
+  metadata_jsonl: "metadata.jsonl"
+  faiss_index: "vectors.faiss"
+
+char_index:
+  dir: index/char_semantic
+  faiss: faiss_char_semantic.faiss
+  vocab: char_vocab.jsonl
+  seed_json: data/kanji_semantic.json  # optional curated seed dictionary
+```
+***Notes***
+
+- gemini_api_key must be provided by the user.(The key is excluded from the repository for security.) 
+
+- All index directories (index/faiss, index/char_semantic/) will be created automatically by the scripts. 
+
+- data/ and index/ contents are not included in the repo; users must generate them via the commands provided in the next section. 
+
+- seed_json is optional and used for enriching the kanji semantic dictionary during incremental updates. 
+
+
+---
 
 ### 🧪 Build & Usage Commands
 #### 1. Download Aozora Texts
@@ -177,6 +232,7 @@ This index enables full-paragraph context retrieval.
 streamlit run app_chat.py
 ```
 
+---
 
 ### 🧠 Workflow Summary
 
@@ -190,6 +246,8 @@ streamlit run app_chat.py
 
 **Generation** – Combine context + kanji meanings and feed them to Gemini to produce a concise, literature-aware Japanese explanation.
 
+
+---
 
 ### 💡 References
 
