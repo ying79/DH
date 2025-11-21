@@ -37,7 +37,7 @@ def get_pipeline():
 rag = get_pipeline()
 
 # ------------------------------------------------------------
-# Simple chat state
+# Chat state
 # ------------------------------------------------------------
 if "chat" not in st.session_state:
     st.session_state.chat = []  # list of {role, content}
@@ -45,10 +45,34 @@ if "chat" not in st.session_state:
 def add_msg(role: str, content: str):
     st.session_state.chat.append({"role": role, "content": content})
 
+def render_answer(ans: str):
+    """
+    Show main text and Sources block nicely.
+    We split on 'Sources:' and render each source line separately.
+    """
+    if "Sources:" not in ans:
+        st.markdown(ans)
+        return
+
+    body, sources = ans.split("Sources:", 1)
+    st.markdown(body.strip())
+
+    st.markdown("**Sources:**")
+    for line in sources.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        # 每一行單獨顯示，就不會被合併成一大段
+        st.markdown(line)
+
 # Show history
 for m in st.session_state.chat:
     with st.chat_message(m["role"]):
-        st.markdown(m["content"])
+        # 過去訊息也用同樣的渲染邏輯，這樣 Sources 一致
+        if m["role"] == "assistant":
+            render_answer(m["content"])
+        else:
+            st.markdown(m["content"])
 
 # ------------------------------------------------------------
 # Chat input
@@ -62,23 +86,21 @@ if prompt:
     if not q:
         st.stop()
 
-    # show user message
+    # user message
     add_msg("user", q)
     with st.chat_message("user"):
         st.markdown(q)
 
-    # assistant response
+    # assistant message
     with st.chat_message("assistant"):
         try:
             with st.spinner("Looking it up in Aozora Bunko…"):
-                # unified answer: if it's a single kanji → char_dialog,
-                # otherwise → normal RAG answer
                 ans = rag.answer_unified(q, top_k=10)
         except Exception as e:
             ans = f"(Error while generating answer: {e})"
             st.error(ans)
 
-        st.markdown(ans)
+        render_answer(ans)
 
     add_msg("assistant", ans)
     st.rerun()

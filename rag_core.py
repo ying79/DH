@@ -977,8 +977,10 @@ class RagPipeline:
         prompt = f"""
 You are helping a Japanese parent who is thinking about kanji for a personal name.
 
-Target kanji: 「{q}」
-Please include the reading (かな + romaji) for this kanji at the beginning.
+Target kanji 
+(include the readings, use the format 「◯◯（かな / romaji）」
+if there are more than one readings then must list all the readings and use the format「◯◯（かな1 / romaji1　、　「◯◯（かな2 / romaji2）」）」): 「{q}」
+Please include **all the possible readings**「◯◯（かな / romaji）」for this kanji at the beginning.
 
 You are given:
 
@@ -1018,7 +1020,7 @@ Please write a warm, natural Japanese explanation (not a template) with the rule
    - Gently say so in Japanese without sounding negative.
 
 5. If suggesting related kanji:
-   - Provide reading (かな + romaji), e.g.:
+   - Provide all possible readings (かな + romaji), e.g.:
        「◯◯（かな / romaji）」など
    - Only introduce 1–3 kanji that genuinely fit the name-image.
    - Do NOT use specific fixed examples in the prompt.
