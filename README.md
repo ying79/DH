@@ -1,4 +1,4 @@
-# DH 
+# DH  [![DOI](https://zenodo.org/badge/1068996564.svg)](https://doi.org/10.5281/zenodo.17667425)
 
 #### 📚 *An Assignment for the Digital Humanities Course* 
 
@@ -29,7 +29,7 @@ to classical Japanese literature, making kanji-centric reading and analysis
 
 ---
 
-### ⚙️ Tech Stack
+### 🛠️ Tech Stack
 
 | Layer | Tool / Library | Description |
 |-------|----------------|--------------|
@@ -255,4 +255,14 @@ streamlit run app_chat.py
 青空文庫: https://www.aozora.gr.jp/   
 FAISS: https://github.com/facebookresearch/faiss  
 Streamlit Docs: https://docs.streamlit.io/  
-Google Generative AI SDK: https://ai.google.dev/  
+Google Generative AI SDK: https://ai.google.dev/   
+
+### 📚 Citation
+
+If you find this project helpful for your study, research, or teaching,
+you may reference it using the DOI below:
+
+**DOI:** https://doi.org/10.5281/zenodo.17667425
+
+[![DOI](https://zenodo.org/badge/1068996564.svg)](https://doi.org/10.5281/zenodo.17667425)
+
