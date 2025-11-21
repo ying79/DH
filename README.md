@@ -257,6 +257,8 @@ FAISS: https://github.com/facebookresearch/faiss
 Streamlit Docs: https://docs.streamlit.io/  
 Google Generative AI SDK: https://ai.google.dev/   
 
+---
+
 ### 📑 Citation
 
 If you find this project helpful for your study, research, or teaching,
