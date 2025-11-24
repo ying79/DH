@@ -103,18 +103,18 @@ flowchart TD
 
     %% ---------- Flow ----------
     A["Aozora Bunko"]:::down --> B["aozora_downloader.py — download & convert"]:::down
-    B --> C["data/*.txt"]:::down
+    B --> C["data/*.txt<br/>data/*.meta.json"]:::down
 
     %% ---- char-level semantic workflow ----
-    C --> D["build_char_semantic.py --defs — build kanji semantics"]:::build
+    C --> D["build_char_semantic.py --defs<br/>— build kanji semantics"]:::build
     D --> E["kanji_semantic_all.jsonl"]:::build
     
-    C --> F["build_char_semantic.py --index — build kanji FAISS index"]:::index
-    F --> G["faiss_char_semantic.faiss / char_vocab.jsonl (kanji-level semantic index)"]:::index
+    C --> F["build_char_semantic.py --index<br/>— build kanji FAISS index"]:::index
+    F --> G["faiss_char_semantic.faiss<br/>char_vocab.jsonl (kanji-level semantic index)"]:::index
 
     %% ---- paragraph-level RAG index ----
-    C --> K["rag_core.py --build — build paragraph index"]:::para
-    K --> L["vectors.faiss / metadata.jsonl (paragraph chunks)"]:::para
+    C --> K["rag_core.py --build<br/>— build paragraph index"]:::para
+    K --> L["vectors.faiss<br/>metadata.jsonl (paragraph chunks)"]:::para
 
     %% ---- combine into RAG ----
     E --> H["rag_core.py — RAG retrieval & explanation"]:::rag
@@ -203,7 +203,6 @@ python build_char_semantic.py --defs
 Outputs:
 
 kanji_semantic_all.jsonl
-kanji_semantic.json (if manually curated)
 ```
 ##### Step B — Build FAISS index (kanji-level)
 ```bash
@@ -212,7 +211,7 @@ python build_char_semantic.py --index
 Outputs:
 
 index/char_semantic/faiss_char_semantic.faiss
-index/char_semantic/metadata.jsonl
+index/char_semantic/char_vocab.jsonl
 ```
 #### 3. Build Paragraph-Level Index (RAG Core)
 ```bash
