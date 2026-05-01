@@ -2,6 +2,7 @@
 
 import streamlit as st
 from rag_core import RagPipeline
+import traceback
 
 # ------------------------------------------------------------
 # Page layout & header
@@ -97,8 +98,8 @@ if prompt:
             with st.spinner("Looking it up in Aozora Bunko…"):
                 ans = rag.answer_unified(q, top_k=10)
         except Exception as e:
-            ans = f"(Error while generating answer: {e})"
-            st.error(ans)
+            st.error(f"Error while generating answer: {type(e).__name__}: {repr(e)}")
+            st.code(traceback.format_exc())
 
         render_answer(ans)
 

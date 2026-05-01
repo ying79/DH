@@ -140,8 +140,8 @@ api:
   # gemini_api_key: ""     # Add your Gemini API key here
 
 models:
-  embed: "text-embedding-004"
-  llm: "gemini-2.0-flash"
+  embed: "gemini-embedding-001"
+  llm: "gemini-2.5-flash"
 
 chunking:
   max_chars: 1200
